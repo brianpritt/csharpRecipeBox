@@ -38,7 +38,10 @@ namespace RecipeBox.Objects
     {
       _instructions = instructions;
     }
-
+    public int GetId()
+    {
+      return Id;
+    }
     public override bool Equals(System.Object otherRecipe)
     {
       if (!(otherRecipe is Recipe))
@@ -160,6 +163,29 @@ namespace RecipeBox.Objects
       }
 
       return allIngredients;
+    }
+    public static Recipe Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("SELECT name, description, rating, author FROM recipes WHERE id = @id;", conn);
+      cmd.Parameters.AddWithValue("@id", id);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      string findName = null; string findAuthor = null; string findDescription = null; int findRating = 0;
+      while(rdr.Read())
+      {
+         findName = rdr.GetString(0);
+         findDescription = rdr.GetString(1);
+         findRating = rdr.GetInt32(2);
+         findAuthor = rdr.GetString(3);
+       }
+      Recipe foundRecipe = new Recipe(findName, findAuthor, findDescription, findRating);
+      foundRecipe.GetIngredientsFromDB();
+
+      if (rdr != null) rdr.Close();
+      if (conn != null) conn.Close();
+      return foundRecipe;
     }
     public static void DeleteAll()
 		{

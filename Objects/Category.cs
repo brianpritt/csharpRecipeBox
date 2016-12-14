@@ -16,7 +16,10 @@ namespace RecipeBox.Objects
       this.Name = name;
       this.Description = description;
     }
-
+    public int GetId()
+    {
+      return Id;
+    }
     public override bool Equals(System.Object otherCategory)
     {
       if (!(otherCategory is Category))
@@ -86,6 +89,28 @@ namespace RecipeBox.Objects
       }
 
       return allCategorys;
+    }
+    public static Category Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("SELECT name, description FROM categories WHERE id = @id;", conn);
+      cmd.Parameters.AddWithValue("@id", id);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      string findName = null;  string findDescription = null;
+      while(rdr.Read())
+      {
+         findName = rdr.GetString(0);
+         findDescription = rdr.GetString(1);
+
+       }
+      Category foundCategory = new Category(findName, findDescription);
+      //foundRecipe.GetIngredientsFromDB();
+
+      if (rdr != null) rdr.Close();
+      if (conn != null) conn.Close();
+      return foundCategory;
     }
     public static void DeleteAll()
 		{

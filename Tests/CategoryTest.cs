@@ -26,6 +26,17 @@ namespace  RecipeBox
       //Assert
       Assert.Equal(expectedCategory, newCategory);
     }
+    [Fact]
+    public void Find_FindsCategoryInDB_true()
+    {
+    Category newCategory = new Category("Soup", "A liquid form of food");
+    Category expectedCategory = new Category("Soup", "A liquid form of food");
+    newCategory.Save();
+
+    Category foundCategory = Category.Find(newCategory.GetId());
+
+    Assert.Equal(foundCategory, newCategory);
+  }
 
     public void Dispose()
     {

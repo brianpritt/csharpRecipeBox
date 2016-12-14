@@ -37,7 +37,28 @@ namespace  RecipeBox
       Dictionary<string, string> actualIngredients = newRecipe.GetIngredientsFromDB();
       Assert.Equal(5, actualIngredients.Count);
     }
-    
+    [Fact]
+    public void Find_FindsRecipeInRecipes_true()
+    {
+      //Arrange
+      Recipe newRecipe = new Recipe("Chicken Soup", "Lina", "Soup");
+      newRecipe.Save();
+      Dictionary<string, string> ingredients = new Dictionary<string, string>(){{"chicken", "1lb"}, {"rice", "1lb"}, {"carrots", "1/2c"}, {"peas","1/4c"}, {"onions", "1/4c"}};
+      newRecipe.SetIngredients(ingredients);
+      newRecipe.SaveIngredients();
+      //Act
+      Recipe findRecipe = Recipe.Find(newRecipe.GetId());
+
+      //Assert
+      Assert.Equal(newRecipe, findRecipe);
+    }
+
+    // public void EditRecipe_EditsRecipeElements_true()
+    // {
+    //   Recipe newRecipe = new Recipe
+    // }
+
+
     public void Dispose()
     {
       Recipe.DeleteAll();
