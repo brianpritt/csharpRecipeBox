@@ -5,7 +5,7 @@ using Nancy.Owin;
 using Nancy;
 using Nancy.ViewEngines.Razor;
 
-namespace TEMPLATE
+namespace RecipeBox
 {
   public class Startup
   {
@@ -14,6 +14,7 @@ namespace TEMPLATE
       app.UseOwin(x => x.UseNancy());
     }
   }
+
   public class CustomRootPathProvider : IRootPathProvider
   {
     public string GetRootPath()
@@ -21,6 +22,7 @@ namespace TEMPLATE
       return Directory.GetCurrentDirectory();
     }
   }
+
   public class RazorConfig : IRazorConfiguration
   {
     public IEnumerable<string> GetAssemblyNames()
@@ -37,5 +39,10 @@ namespace TEMPLATE
     {
       get { return false; }
     }
+  }
+
+  public static class DBConfiguration
+  {
+      public static string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=recipe_box;Integrated Security=SSPI;";
   }
 }

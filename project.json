@@ -12,6 +12,10 @@
     "test": "xunit.runner.dnx",
   },
   "frameworks": {
-    "dnx451": {}
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Data": "4.0.0.0"
+      }
+    }
   }
 }
