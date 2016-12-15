@@ -67,12 +67,15 @@ namespace  RecipeBox
       Assert.Equal(2,actualInstructions.Count);
 
     }
-
-    // public void EditRecipe_EditsRecipeElements_true()
-    // {
-    //   Recipe newRecipe = new Recipe
-    // }
-
+    [Fact]
+    public void EditRecipe_EditsRecipeElements_true()
+    {
+      Recipe newRecipe = new Recipe("Chicken Soup", "Lina", "Soup");
+      newRecipe.Save();
+      newRecipe.EditRecipe("Tomato Soup", "Brian", "Soup");
+      Recipe foundRecipe = Recipe.Find(newRecipe.Id);
+      Assert.Equal("Tomato Soup", foundRecipe.Name);
+    }
 
     public void Dispose()
     {

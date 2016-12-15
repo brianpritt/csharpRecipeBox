@@ -227,6 +227,32 @@ namespace RecipeBox.Objects
 
       return allInstructions;
     }
+    public void EditRecipe(string name, string author, string description)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("Update recipes SET name = @NewName, author = @Author, description = @Description OUTPUT INSERTED.name WHERE id = @RecipeId;", conn) ;
+      cmd.Parameters.AddWithValue("@NewName", name);
+      //cmd.Parameters.AddWithValue("@Rating",rating);
+      cmd.Parameters.AddWithValue("@Author", author);
+      cmd.Parameters.AddWithValue("@Description", description);
+      cmd.Parameters.AddWithValue("@RecipeId", this.Id);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this.Name = rdr.GetString(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+    }
     public static void DeleteAll()
 		{
 		  SqlConnection conn = DB.Connection();
