@@ -187,6 +187,46 @@ namespace RecipeBox.Objects
       if (conn != null) conn.Close();
       return foundRecipe;
     }
+    public void SaveInstructions()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      foreach(var item in this.GetInstructions())
+      {
+        SqlCommand  cmd = new SqlCommand("INSERT INTO instructions (recipe_id, instructions) VALUES (@RecipeId, @Instructions);", conn);
+        cmd.Parameters.AddWithValue("@RecipeId",this.Id);
+        cmd.Parameters.AddWithValue("@Instructions", item);
+        cmd.ExecuteNonQuery();
+      }
+      if (conn!=null) conn.Close();
+    }
+    public List<string> GetInstructionsFromDB()
+    {
+      List<string> allInstructions = new List<string>{};
+
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM instructions WHERE recipe_id = @RecipeId;", conn);
+      cmd.Parameters.AddWithValue("@RecipeId", this.Id);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        allInstructions.Add (rdr.GetString(2));
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return allInstructions;
+    }
     public static void DeleteAll()
 		{
 		  SqlConnection conn = DB.Connection();

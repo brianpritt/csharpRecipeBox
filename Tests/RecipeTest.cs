@@ -52,6 +52,21 @@ namespace  RecipeBox
       //Assert
       Assert.Equal(newRecipe, findRecipe);
     }
+    [Fact]
+    public void SaveInstructions_SavesInstructionsToDB()
+    {
+      //Arrange
+      Recipe newRecipe = new Recipe("Chicken Soup", "Lina", "Soup");
+      List<string> instructions = new List<string>(){"Put Chicken In", "Cook"};
+      newRecipe.Save();
+      newRecipe.SetInstructions(instructions);
+      newRecipe.SaveInstructions();
+      //Act
+      List<string> actualInstructions = newRecipe.GetInstructionsFromDB();
+      //Assert
+      Assert.Equal(2,actualInstructions.Count);
+
+    }
 
     // public void EditRecipe_EditsRecipeElements_true()
     // {
